@@ -1,0 +1,72 @@
+Pentomino Solver
+Marc Lepage
+
+OVERVIEW
+
+The 12 free pentominoes and the 2x2 tetromino can be arranged to exactly cover the 8x8 checkerboard.
+
+In 2005 I read the question, popularized by Martin Gardner, of how many unique solutions exist. This was noted to be unknown.
+
+So I wrote this small C++ program to perform the computation using symmetry, backtracking, and pruning. The program outputs 16146 solutions.
+
+While verifying the solutions on Google, I learned that Donald Knuth had solved this problem only 6 years earlier. I later used Knuth's algorithms for more challenging polycube packing problems.
+
+PROBLEM DESCRIPTION
+
+From Wikipedia:
+
+"A standard pentomino puzzle is to tile a rectangular box with the pentominoes, i.e. cover it without overlap and without gaps. Each of the 12 pentominoes has an area of 5 unit squares, so the box must have an area of 60 units. Possible sizes are 6×10, 5×12, 4×15 and 3×20. The avid puzzler can probably solve these problems by hand within a few hours. A more challenging task, typically requiring a computer search, is to count the total number of solutions in each case."
+
+"A somewhat easier (more symmetrical) puzzle, the 8×8 rectangle with a 2×2 hole in the center, was solved by Dana Scott as far back as 1958. There are 65 solutions. Scott's algorithm was one of the first applications of a backtracking computer program. Variations of this puzzle allow the four holes to be placed in any position. Efficient algorithms have been described to solve such problems, for instance by Donald Knuth. Running on modern hardware, these pentomino puzzles can now be solved in mere seconds."
+
+http://en.wikipedia.org/wiki/Pentomino
+
+DATA STRUCTURES
+
+The program encodes the board as an 8x8 array of integers, using -1 to denote an empty square.
+
+The pieces are encoded as 5x5 arrays of integers, again using -1 to denote an empty square, and an integer (0 for the tetromino, 1-12 for the pentominoes) to denote occupancy.
+
+Pieces can have more than one encoding, due to rotation and reflection. These are manually entered in the data; an improvement would be to automatically generate them.
+
+There are a few static data structures which augment the piece data. *orientMax* records the number of orientations for each piece; given this, *pieceIdx* records the index of the first orientation of each piece. *pieceMin* and *pieceMax* record the minimum and maximum number of rows or columns that a piece uses.
+
+There are a few dynamic data structures which keep track of information for each piece as the program runs. *pieceOrient* records the piece's orientation; *pieceRow* and *pieceCol* record the piece's position.
+
+The program tracks the number of solutions found in *solutionCount*, and the index of the last piece positioned in *lastPiece*.
+
+ALGORITHM
+
+From Wikipedia:
+
+"Backtracking is a general algorithm for finding all (or some) solutions to some computational problem, that incrementally builds candidates to the solutions, and abandons each partial candidate c ("backtracks") as soon as it determines that c cannot possibly be completed to a valid solution."
+
+http://en.wikipedia.org/wiki/Backtracking
+
+The program enforces a unique ordering of solutions by considering each piece in order, and each piece's orientation and position in order. This ordering ensures all possible placements are exhaustively considered.
+
+So the first piece (the tetromino) will be initially placed in its sole orientation in the upper left corner. Then the program will attempt to place the second piece (the X pentomino) in its sole orientation in the upper left corner, and fail. The program will backtrack, considering other positions for the X, until it is placed (or all positions have been exhausted). Once placed, the next piece (the I pentomino) will be placed in its first orientation in a position (after failing in the upper left area of the board).
+
+This process continues until all pieces have been placed, which is a solution that is printed. Whenever a placement fails, the program backtrack first position, then orientation, then finally the piece being placed. For example, after the I has been placed in all positions, its other orientation will be considered, before the X is placed in a different position.
+
+The program employs a number of special cases to prune solutions that are merely reflections or rotations of another solution. The placement of the tetromino ("square") is constrained to  a 1/8 slice of the board, and given its placement, the X ("cross") and I ("line") pentominoes may also have their placements constrained.
+
+RESULTS
+
+The program runs in a few minutes on a late 2000s decade laptop. It prints 16146 unique solutions.
+
+KNUTH'S ALGORITHM
+
+Unknown to me, Donald Knuth noticed this unsolved problem in 1999, and computed the same answer.
+
+However, Knuth used a more sophisticated backtracking algorithm called Algorithm X. This is commonly implemented using Dancing Links (DLX), which runs faster but requires more storage.
+
+http://en.wikipedia.org/wiki/Knuth's_Algorithm_X
+http://en.wikipedia.org/wiki/Dancing_Links
+http://www-cs-faculty.stanford.edu/~knuth/preprints.html
+
+FURTHER WORK
+
+I later used Knuth's Algorithm X to solve polycube packing problems in 3 dimensions.
+
+http://en.wikipedia.org/wiki/Polycube
