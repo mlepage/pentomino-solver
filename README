@@ -1,6 +1,7 @@
 Pentomino Solver
 Marc Lepage
 
+
 OVERVIEW
 
 The 12 free pentominoes and the 2x2 tetromino can be arranged to exactly cover the 8x8 checkerboard.
@@ -11,6 +12,7 @@ So I wrote this small C++ program to perform the computation using symmetry, bac
 
 While verifying the solutions on Google, I learned that Donald Knuth had solved this problem only 6 years earlier. I later used Knuth's algorithms for more challenging polycube packing problems.
 
+
 PROBLEM DESCRIPTION
 
 From Wikipedia:
@@ -20,6 +22,7 @@ From Wikipedia:
 "A somewhat easier (more symmetrical) puzzle, the 8×8 rectangle with a 2×2 hole in the center, was solved by Dana Scott as far back as 1958. There are 65 solutions. Scott's algorithm was one of the first applications of a backtracking computer program. Variations of this puzzle allow the four holes to be placed in any position. Efficient algorithms have been described to solve such problems, for instance by Donald Knuth. Running on modern hardware, these pentomino puzzles can now be solved in mere seconds."
 
 http://en.wikipedia.org/wiki/Pentomino
+
 
 DATA STRUCTURES
 
@@ -34,6 +37,7 @@ There are a few static data structures which augment the piece data. *orientMax*
 There are a few dynamic data structures which keep track of information for each piece as the program runs. *pieceOrient* records the piece's orientation; *pieceRow* and *pieceCol* record the piece's position.
 
 The program tracks the number of solutions found in *solutionCount*, and the index of the last piece positioned in *lastPiece*.
+
 
 ALGORITHM
 
@@ -51,9 +55,11 @@ This process continues until all pieces have been placed, which is a solution th
 
 The program employs a number of special cases to prune solutions that are merely reflections or rotations of another solution. The placement of the tetromino ("square") is constrained to  a 1/8 slice of the board, and given its placement, the X ("cross") and I ("line") pentominoes may also have their placements constrained.
 
+
 RESULTS
 
 The program runs in a few minutes on a late 2000s decade laptop. It prints 16146 unique solutions.
+
 
 KNUTH'S ALGORITHM
 
@@ -64,6 +70,7 @@ However, Knuth used a more sophisticated backtracking algorithm called Algorithm
 http://en.wikipedia.org/wiki/Knuth's_Algorithm_X
 http://en.wikipedia.org/wiki/Dancing_Links
 http://www-cs-faculty.stanford.edu/~knuth/preprints.html
+
 
 FURTHER WORK
 

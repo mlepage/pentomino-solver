@@ -1,5 +1,5 @@
-// Pentomino solver.
-// Copyright 2005 Marc A. Lepage.
+// Pentomino solver
+// Copyright (C) 2005 Marc Lepage
 
 #include <iostream>
 #include <iomanip>
