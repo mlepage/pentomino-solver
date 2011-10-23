@@ -77,3 +77,7 @@ FURTHER WORK
 I later used Knuth's Algorithm X to solve polycube packing problems in 3 dimensions.
 
 http://en.wikipedia.org/wiki/Polycube
+
+The Lua code is available here:
+
+http://github.com/mlepage/polycube-solver
